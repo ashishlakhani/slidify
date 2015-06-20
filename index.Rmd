@@ -1,0 +1,60 @@
+---
+title       : Speed Distance Prediction
+subtitle    : 
+author      : Ashish Lakhani
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+### Salient Features 
+
+
+* Shiny application uses dataset cars to build a prediction model.
+* App creates a model to calculate Distance required to stop car depending on its speed.
+* Apps Asks user input for the speed at which their car is travelling.
+* Uses Model to predict distance required to stop car at given speed.
+
+--- &twocol
+
+### Exploratory Analysis/Transformation
+
+*** =left
+
+```{r,echo=FALSE}
+cars$sqrtdis=sqrt(cars$dist)
+par(mfrow=c(2,2))
+plot(cars$speed,cars$dist)
+plot(cars$speed,cars$sqrtdis)
+```
+
+*** =right
+
+
+
+* Plot on left is distance v/s speed.
+* Plot on right is sqrt of distance v/s speed.
+* Plot on right looks more linear so we will do transformation of distance for our analysis
+
+---
+
+### Final Model
+
+```{r,echo=FALSE}
+fit<-lm(sqrt(dist) ~ speed,data=cars)
+summary(fit)
+```
+
+---
+
+### Final Prediction
+
+
+* Previous page displays summary of model we build.
+* It predicts stopping distance in feet for cars at a given speed.
+* In our shiny app We ask user to input speed of cars on left and provide distance required to stop as result.
+* Final result obtained by multiplying speed with speed coefficient(.32241) and adding the intercept (1.277).
